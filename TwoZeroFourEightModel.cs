@@ -12,7 +12,7 @@ namespace twozerofoureight
         protected int[,] board;
         protected Random rand;
         protected int[] range;
-
+        protected int score;
         public TwoZeroFourEightModel() : this(4)
         {
             // default board size is 4 
@@ -40,15 +40,90 @@ namespace twozerofoureight
             return board;
         }
 
+        public int GetScore()
+        {
+            for(int i=0;i<boardSize;i++) {
+                for (int j=0;j<boardSize;j++)
+                {
+                    score += board[i, j];
+                }
+            }
+            return score;
+        }
+
+        public int CheckGameOver()
+        {
+            int FullBoard = 0;
+           /* 
+            for (int i = 0; i < boardSize; i++)
+            {
+                for (int j = 0; j < boardSize; j++)
+                {
+                    if (board[i, j] == 0)
+                    {
+                        return false;
+                    }
+                }
+            }
+            */
+            
+            for (int i = 0; i < boardSize; i++)
+            {
+                for (int j = 0; j < boardSize; j++)
+                {
+                    if (board[i, j] == 2048) return 1;
+                    else
+                    {
+                        if(board[i,j]!=0)FullBoard++;
+                    }
+                }
+            }
+
+
+            if (FullBoard==16)
+            {
+                int tmp;
+                for (int i = 0; i < boardSize; i++)
+                {
+                    for (int j = 0; j < boardSize; j++)
+                    {
+                        tmp = board[i, j];
+                        if (i - 1 >= 0)
+                        {
+                            if (tmp == board[i - 1, j])return 0; 
+                        }
+
+                        if (i + 1 <= 3)
+                        {
+                            if (tmp == board[i + 1, j]) return 0; 
+                        }
+                        if (j - 1 >= 0)
+                        {
+                            if (tmp == board[i, j - 1])return 0; 
+                        }
+                        if (j + 1 <= 3)
+                        {
+                            if (tmp == board[i, j + 1])return 0; 
+                        }
+                    }
+                }
+                return 2;
+            }
+            return 0;
+            
+        }
+
         private void AddRandomSlot()
         {
             while (true)
             {
                 int x = rand.Next(boardSize);
                 int y = rand.Next(boardSize);
+                int z = rand.Next(0,20);
                 if (board[x, y] == 0)
                 {
-                    board[x, y] = 2;
+                    if (z == 4)board[x, y] = z;
+                    else board[x, y] = 2;
                     return;
                 }
             }
@@ -192,5 +267,7 @@ namespace twozerofoureight
             }
             HandleChanges(changed);
         }
+
+       //
     }
 }

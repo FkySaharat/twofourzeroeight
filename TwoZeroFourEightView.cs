@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace twozerofoureight
 {
-    public partial class TwoZeroFourEightView : Form, View
+    public partial class TwoZeroFourEightView : Form, View //inherit just one by one,So we have change view to be interface
     {
         Model model;
         Controller controller;
@@ -18,17 +18,19 @@ namespace twozerofoureight
         public TwoZeroFourEightView()
         {
             InitializeComponent();
-            model = new TwoZeroFourEightModel();
-            model.AttachObserver(this);
+            model = new TwoZeroFourEightModel();//create model ,has sth in board
+            model.AttachObserver(this);//this class
             controller = new TwoZeroFourEightController();
             controller.AddModel(model);
-            controller.ActionPerformed(TwoZeroFourEightController.LEFT);
+            controller.ActionPerformed(TwoZeroFourEightController.LEFT);//start action by program with press 'left' or '0'
         }
 
         public void Notify(Model m)
         {
             UpdateBoard(((TwoZeroFourEightModel)m).GetBoard());
-        }
+            UpdateScore(((TwoZeroFourEightModel)m).GetScore());
+            UpdateGameOver(((TwoZeroFourEightModel)m).CheckGameOver());
+        }//m can't get board,we have to change it to be TwoZeroFourEightModel type before
 
         private void UpdateTile(Label l, int i)
         {
@@ -40,6 +42,7 @@ namespace twozerofoureight
             {
                 l.Text = "";
             }
+
             switch (i)
             {
                 case 0:
@@ -78,7 +81,31 @@ namespace twozerofoureight
             UpdateTile(lbl32, board[3, 2]);
             UpdateTile(lbl33, board[3, 3]);
         }
+        private void UpdateScore(int score)
+        {
+            lblScore.Text = "Score : "+Convert.ToString(score-4);
+        }
 
+        private void UpdateGameOver(int status)
+        {
+            if (status==1)
+            {
+                lblGameOver.Text = "You Win!";
+                btnDown.Enabled = false;
+                btnUp.Enabled = false;
+                btnRight.Enabled = false;
+                btnLeft.Enabled = false;
+            }
+            if (status == 2)
+            {
+                lblGameOver.Text = "You Lose!";
+                btnDown.Enabled = false;
+                btnUp.Enabled = false;
+                btnRight.Enabled = false;
+                btnLeft.Enabled = false;
+            }
+           
+        }
         private void btnLeft_Click(object sender, EventArgs e)
         {
             controller.ActionPerformed(TwoZeroFourEightController.LEFT);
@@ -99,5 +126,41 @@ namespace twozerofoureight
             controller.ActionPerformed(TwoZeroFourEightController.DOWN);
         }
 
+        private void TwoZeroFourEightView_KeyDown(object sender, KeyEventArgs e)
+        {Console.WriteLine(e.KeyCode); 
+            switch (e.KeyData)
+            {
+                case Keys.W:
+                case Keys.Up:
+                    controller.ActionPerformed(TwoZeroFourEightController.UP);
+                    break;
+                case Keys.S:
+                case Keys.Down:
+                    controller.ActionPerformed(TwoZeroFourEightController.DOWN);
+                    break;
+                case Keys.A:
+                case Keys.Left:
+                    controller.ActionPerformed(TwoZeroFourEightController.LEFT);
+                    break;
+                case Keys.D:
+                case Keys.Right:
+                    controller.ActionPerformed(TwoZeroFourEightController.RIGHT);
+                    break;
+                    
+            }
+        }
+
+        private void TwoZeroFourEightView_KeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            switch (e.KeyData)
+            {
+                case Keys.Up:
+                case Keys.Down:
+                case Keys.Left:
+                case Keys.Right:
+                    e.IsInputKey = true;
+                    break;
+            }
+        }
     }
 }

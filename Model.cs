@@ -13,7 +13,7 @@ namespace twozerofoureight
 
         public Model()
         {
-            oList = new ArrayList();
+            oList = new ArrayList();//create collection of an object
         }
         public void NotifyAll()
         {
