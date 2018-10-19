@@ -20,6 +20,7 @@ namespace twozerofoureight
 
         public TwoZeroFourEightModel(int size)
         {
+            
             boardSize = size;
             board = new int[boardSize, boardSize];
             range = Enumerable.Range(0, boardSize).ToArray();
@@ -42,18 +43,20 @@ namespace twozerofoureight
 
         public int GetScore()
         {
+            score = 0;//recount
+            //summation of all nummber on the board
             for(int i=0;i<boardSize;i++) {
                 for (int j=0;j<boardSize;j++)
                 {
-                    score += board[i, j];
+                    score += board[i, j];//collection of the value of each tile
                 }
             }
-            return score;
+            return score;//get the result of summation to the view part
         }
 
-        public int CheckGameOver()
+        public int CheckGameOver()//check win=1,lose=2,continue=0 game
         {
-            int FullBoard = 0;
+            int FullBoard = 0;//store the number of the tile that has value
            /* 
             for (int i = 0; i < boardSize; i++)
             {
@@ -71,44 +74,46 @@ namespace twozerofoureight
             {
                 for (int j = 0; j < boardSize; j++)
                 {
-                    if (board[i, j] == 2048) return 1;
+                    if (board[i, j] == 2048) return 1;//if user can make 2048 return status win to view part
                     else
                     {
-                        if(board[i,j]!=0)FullBoard++;
+                        if(board[i,j]!=0)FullBoard++;//counting number of tile that has value
                     }
                 }
             }
 
 
-            if (FullBoard==16)
+            if (FullBoard==16)//When the board is full,we have to check that it can go on
             {
-                int tmp;
+                int tmp;//the tile that we are checking
                 for (int i = 0; i < boardSize; i++)
                 {
                     for (int j = 0; j < boardSize; j++)
                     {
                         tmp = board[i, j];
-                        if (i - 1 >= 0)
+                        if (i - 1 >= 0)//if we can check the left tile,So check it that like the tile that we are checking
                         {
-                            if (tmp == board[i - 1, j])return 0; 
+                            if (tmp == board[i - 1, j])return 0;//if it has the same value,send status that it can go on
                         }
 
-                        if (i + 1 <= 3)
+                        if (i + 1 <= 3)//if we can check the right tile,So check it that like the tile that we are checking
                         {
-                            if (tmp == board[i + 1, j]) return 0; 
+                            if (tmp == board[i + 1, j]) return 0;//if it has the same value,send status that it can go on 
                         }
-                        if (j - 1 >= 0)
+                        if (j - 1 >= 0)//if we can check the top tile,So check it that like the tile that we are checking
                         {
-                            if (tmp == board[i, j - 1])return 0; 
+                            if (tmp == board[i, j - 1])return 0;//if it has the same value,send status that it can go on 
                         }
-                        if (j + 1 <= 3)
+                        if (j + 1 <= 3)//if we can check the buttom tile,So check it that like the tile that we are checking
                         {
-                            if (tmp == board[i, j + 1])return 0; 
+                            if (tmp == board[i, j + 1])return 0; //if it has the same value,send status that it can go on
                         }
                     }
                 }
-                return 2;
+                return 2;//if it doesn't have the same value return stop the game to view
             }
+
+            //if the board isn't full,sending the status that it can go on
             return 0;
             
         }
@@ -122,8 +127,8 @@ namespace twozerofoureight
                 int z = rand.Next(0,20);
                 if (board[x, y] == 0)
                 {
-                    if (z == 4)board[x, y] = z;
-                    else board[x, y] = 2;
+                    if (z == 4)board[x, y] = z;//if it can pick 4 so get it
+                    else board[x, y] = 2;//else (default)pick 2 
                     return;
                 }
             }

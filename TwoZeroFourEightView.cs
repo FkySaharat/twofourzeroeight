@@ -83,28 +83,30 @@ namespace twozerofoureight
         }
         private void UpdateScore(int score)
         {
-            lblScore.Text = "Score : "+Convert.ToString(score-4);
+            lblScore.Text = "Score : "+Convert.ToString(score);//show score :.... to the server
         }
 
         private void UpdateGameOver(int status)
         {
-            if (status==1)
+            if (status==1)//if status equal 1 that mean game win
             {
                 lblGameOver.Text = "You Win!";
+                   //make disable control
                 btnDown.Enabled = false;
                 btnUp.Enabled = false;
                 btnRight.Enabled = false;
                 btnLeft.Enabled = false;
             }
-            if (status == 2)
+            if (status == 2)//if status equal 1 that mean game lose
             {
                 lblGameOver.Text = "You Lose!";
+                //make disable control
                 btnDown.Enabled = false;
                 btnUp.Enabled = false;
                 btnRight.Enabled = false;
                 btnLeft.Enabled = false;
             }
-           
+            //other status value mean continue game  
         }
         private void btnLeft_Click(object sender, EventArgs e)
         {
@@ -126,9 +128,11 @@ namespace twozerofoureight
             controller.ActionPerformed(TwoZeroFourEightController.DOWN);
         }
 
+
+        //buttom interface and w a s d control
         private void TwoZeroFourEightView_KeyDown(object sender, KeyEventArgs e)
         {Console.WriteLine(e.KeyCode); 
-            switch (e.KeyData)
+            switch (e.KeyData)//read data from keyboard
             {
                 case Keys.W:
                 case Keys.Up:
@@ -150,6 +154,7 @@ namespace twozerofoureight
             }
         }
 
+        //arrowkey
         private void TwoZeroFourEightView_KeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             switch (e.KeyData)
